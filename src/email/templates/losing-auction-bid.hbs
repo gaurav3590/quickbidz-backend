@@ -1,0 +1,109 @@
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Auction Result</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .header {
+        text-align: center;
+        padding: 20px 0;
+        background-color: #4a47d5;
+        color: white;
+      }
+      .content {
+        padding: 20px;
+        background-color: #f9f9f9;
+      }
+      .button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #4a47d5;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        margin: 10px 5px;
+      }
+      .footer {
+        text-align: center;
+        padding: 20px;
+        font-size: 12px;
+        color: #777;
+      }
+      .auction-box {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 15px;
+        margin: 20px 0;
+        background-color: #fff;
+      }
+      .bid-info {
+        margin: 10px 0;
+      }
+      .your-bid {
+        color: #dc3545;
+      }
+      .winning-bid {
+        color: #28a745;
+        font-weight: bold;
+      }
+      .recommendation {
+        background-color: #e9f7fd;
+        border-left: 4px solid #4a47d5;
+        padding: 10px 15px;
+        margin: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class='container'>
+      <div class='header'>
+        <h1>Auction Result</h1>
+      </div>
+      <div class='content'>
+        <p>Hello {{username}},</p>
+        <p>Thank you for participating in the following auction:</p>
+
+        <div class='auction-box'>
+          <h2>{{auctionTitle}}</h2>
+          <p class='bid-info your-bid'>Your highest bid: ${{yourBid}}</p>
+          <p class='bid-info winning-bid'>Winning bid: ${{winningBid}}</p>
+        </div>
+
+        <p>Unfortunately, your bid was not the highest in this auction. We
+          encourage you to explore our other exciting auctions that might
+          interest you.</p>
+
+        <div class='recommendation'>
+          <p><strong>Don't give up!</strong>
+            We have many more auctions available that might match your
+            interests.</p>
+        </div>
+
+        <div style='text-align: center;'>
+          <a href='{{allAuctionsUrl}}' class='button'>Browse More Auctions</a>
+          <a href='{{auctionUrl}}' class='button'>View Auction Details</a>
+        </div>
+
+        <p>We appreciate your participation and hope to see you in future
+          auctions!</p>
+        <p>Best regards,<br />The QuickBidz Team</p>
+      </div>
+      <div class='footer'>
+        <p>If you have any questions, please contact us at support@quickbidz.com</p>
+        <p>&copy; 2023 QuickBidz. All rights reserved.</p>
+      </div>
+    </div>
+  </body>
+</html>
