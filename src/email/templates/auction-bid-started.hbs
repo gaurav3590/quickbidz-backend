@@ -1,0 +1,131 @@
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Auction Bidding Started</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        text-align: center;
+        padding: 25px 0;
+        background-color: #4a47d5;
+        color: white;
+        border-radius: 4px 4px 0 0;
+      }
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      .content {
+        padding: 30px 20px;
+        background-color: #ffffff;
+      }
+      .button {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #4a47d5;
+        color: white !important;
+        text-decoration: none;
+        border-radius: 4px;
+        margin: 20px 0;
+        font-weight: bold;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+      .button:hover {
+        background-color: #3935b5;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+      }
+      .footer {
+        text-align: center;
+        padding: 20px;
+        font-size: 12px;
+        color: #777;
+        border-top: 1px solid #eee;
+      }
+      .auction-box {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+        background-color: #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      }
+      .auction-title {
+        color: #4a47d5;
+        margin-top: 0;
+        margin-bottom: 15px;
+        font-size: 22px;
+      }
+      .text-center {
+        text-align: center;
+      }
+      .highlight {
+        font-weight: bold;
+        color: #4a47d5;
+      }
+      .countdown {
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-radius: 4px;
+        font-weight: bold;
+        margin: 10px 0;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class='container'>
+      <div class='header'>
+        <div class='logo'>QuickBidz</div>
+        <h1>Bidding Has Started!</h1>
+      </div>
+      <div class='content'>
+        <p>Hello {{username}},</p>
+        <p>Great news! Bidding has officially started for an auction you're watching:</p>
+
+        <div class='auction-box'>
+          <h2 class='auction-title'>{{auctionTitle}}</h2>
+          <p>This is your opportunity to place competitive bids and win this exciting item!</p>
+          <p class='countdown'>Don't wait too long - place your bid now!</p>
+        </div>
+
+        <div class='text-center'>
+          <a href='{{auctionUrl}}' class='button'>VIEW AUCTION NOW</a>
+        </div>
+
+        <p>Here are some quick tips for successful bidding:</p>
+        <ul>
+          <li>Set up <span class='highlight'>automatic bidding</span> to stay competitive throughout the auction</li>
+          <li>Check the auction regularly for updates and competing bids</li>
+          <li>Make sure your payment methods are up to date</li>
+        </ul>
+
+        <p>Good luck with your bidding!</p>
+        <p>Best regards,<br />The QuickBidz Team</p>
+      </div>
+      <div class='footer'>
+        <p>If you have any questions, please contact our support team at <a href="mailto:support@quickbidz.com" style="color: #4a47d5; text-decoration: none;">support@quickbidz.com</a></p>
+        <p>You're receiving this email because you opted to watch this auction. <a href="{{unsubscribeUrl}}" style="color: #4a47d5; text-decoration: none;">Manage notification preferences</a></p>
+        <p>&copy; 2023 QuickBidz. All rights reserved.</p>
+      </div>
+    </div>
+  </body>
+</html>
