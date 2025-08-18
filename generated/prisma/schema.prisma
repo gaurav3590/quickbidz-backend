@@ -1,0 +1,167 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../generated/prisma"
+  binaryTargets = ["native", "rhel-openssl-3.0.x", "windows"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                     String         @id @default(uuid())
+  email                  String         @unique
+  username               String         @unique
+  password               String
+  firstName              String?
+  lastName               String?
+  isActive               Boolean        @default(true)
+  role                   String         @default("USER")
+  profileImage           String?
+  createdAt              DateTime       @default(now())
+  updatedAt              DateTime       @updatedAt
+  activationToken        String?
+  activationTokenExpires DateTime?
+  resetToken             String?
+  resetTokenExpires      DateTime?
+  dob                    DateTime?
+  fcmToken               String? // Firebase Cloud Messaging token for push notifications
+  auctions               Auction[]      @relation("UserAuctions")
+  bids                   Bid[]          @relation("UserBids")
+  comments               Comment[]      @relation("UserComments")
+  notifications          Notification[] @relation("UserNotifications")
+  payments               Payment[]      @relation("UserPayments")
+  refreshTokens          RefreshToken[] @relation("UserRefreshTokens")
+  stories                Story[]        @relation("UserStories")
+  userFolders            UserFolder[]   @relation("UserFolders")
+}
+
+model Auction {
+  id                String    @id @default(uuid())
+  title             String
+  description       String
+  category          String?
+  condition         String?
+  startingPrice     Float
+  currentPrice      Float
+  reservePrice      Float?
+  bidIncrements     Float?    @default(1)
+  duration          Int?
+  shippingCost      Float?
+  shippingLocations String[]  @default([])
+  returnPolicy      String?
+  termsAccepted     Boolean   @default(false)
+  startTime         DateTime
+  endTime           DateTime
+  status            String    @default("PENDING")
+  sellerId          String
+  winningBidId      String?   @unique
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  imageUrls         String[]  @default([])
+  seller            User      @relation("UserAuctions", fields: [sellerId], references: [id])
+  winningBid        Bid?      @relation("AuctionWinningBid", fields: [winningBidId], references: [id])
+  bids              Bid[]     @relation("AuctionBids")
+  comments          Comment[] @relation("AuctionComments")
+  payments          Payment[] @relation("AuctionPayments")
+}
+
+model Bid {
+  id                String    @id @default(uuid())
+  amount            Float
+  status            String    @default("PLACED")
+  bidderId          String
+  auctionId         String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  winningForAuction Auction?  @relation("AuctionWinningBid")
+  auction           Auction   @relation("AuctionBids", fields: [auctionId], references: [id])
+  bidder            User      @relation("UserBids", fields: [bidderId], references: [id])
+  payments          Payment[] @relation("BidPayments")
+}
+
+model Comment {
+  id        String    @id @default(uuid())
+  content   String
+  userId    String
+  auctionId String
+  parentId  String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  auction   Auction   @relation("AuctionComments", fields: [auctionId], references: [id])
+  parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies   Comment[] @relation("CommentReplies")
+  user      User      @relation("UserComments", fields: [userId], references: [id])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  type      String
+  title     String
+  message   String
+  userId    String
+  read      Boolean  @default(false)
+  data      Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation("UserNotifications", fields: [userId], references: [id])
+}
+
+model Payment {
+  id              String   @id @default(uuid())
+  amount          Float
+  status          String   @default("PENDING")
+  paymentMethod   String
+  userId          String
+  auctionId       String
+  bidId           String?
+  transactionId   String?
+  gatewayResponse Json?
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  auction         Auction  @relation("AuctionPayments", fields: [auctionId], references: [id])
+  bid             Bid?     @relation("BidPayments", fields: [bidId], references: [id])
+  user            User     @relation("UserPayments", fields: [userId], references: [id])
+}
+
+model Story {
+  id           String      @id @default(uuid())
+  title        String
+  content      String
+  imageUrl     String?
+  status       String      @default("ACTIVE")
+  userId       String
+  userFolderId String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  userFolder   UserFolder? @relation("FolderStories", fields: [userFolderId], references: [id])
+  user         User        @relation("UserStories", fields: [userId], references: [id])
+}
+
+model UserFolder {
+  id         String       @id @default(uuid())
+  name       String
+  userId     String
+  parentId   String?
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  stories    Story[]      @relation("FolderStories")
+  parent     UserFolder?  @relation("FolderHierarchy", fields: [parentId], references: [id])
+  subfolders UserFolder[] @relation("FolderHierarchy")
+  user       User         @relation("UserFolders", fields: [userId], references: [id])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  tokenHash String
+  family    String
+  revoked   Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation("UserRefreshTokens", fields: [userId], references: [id])
+
+  @@index([userId, family])
+}

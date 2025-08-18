@@ -1,0 +1,145 @@
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Congratulations! You Won the Auction</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        text-align: center;
+        padding: 25px 0;
+        background-color: #4a47d5;
+        color: white;
+        border-radius: 4px 4px 0 0;
+      }
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      .content {
+        padding: 30px 20px;
+        background-color: #ffffff;
+      }
+      .button {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #4a47d5;
+        color: white !important;
+        text-decoration: none;
+        border-radius: 4px;
+        margin: 10px 8px;
+        font-weight: bold;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+      .button:hover {
+        background-color: #3935b5;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+      }
+      .button.payment {
+        background-color: #28a745;
+      }
+      .button.payment:hover {
+        background-color: #218838;
+      }
+      .footer {
+        text-align: center;
+        padding: 20px;
+        font-size: 12px;
+        color: #777;
+        border-top: 1px solid #eee;
+      }
+      .auction-box {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+        background-color: #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      }
+      .bid-info {
+        font-size: 20px;
+        font-weight: bold;
+        color: #28a745;
+        margin: 15px 0;
+      }
+      .celebration {
+        font-size: 28px;
+        text-align: center;
+        margin: 20px 0;
+        color: #4a47d5;
+      }
+      .text-center {
+        text-align: center;
+      }
+      .next-steps {
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #28a745;
+        margin: 15px 0;
+      }
+      .auction-title {
+        color: #4a47d5;
+        margin-top: 0;
+        margin-bottom: 15px;
+        font-size: 22px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class='container'>
+      <div class='header'>
+        <div class='logo'>QuickBidz</div>
+        <h1>Congratulations!</h1>
+      </div>
+      <div class='content'>
+        <div class='celebration'>🎉 You Won the Auction! 🎉</div>
+
+        <p>Hello {{username}},</p>
+        <p>Fantastic news! You are the winning bidder for the following auction:</p>
+
+        <div class='auction-box'>
+          <h2 class='auction-title'>{{auctionTitle}}</h2>
+          <p class='bid-info'>Your winning bid: ${{winningBid}}</p>
+        </div>
+
+        <div class='next-steps'>
+          <p><strong>Next Steps:</strong> To complete your purchase and claim your item, please proceed to payment within the next 48 hours.</p>
+        </div>
+
+        <div class='text-center'>
+          <a href='{{paymentUrl}}' class='button payment'>COMPLETE PAYMENT</a>
+          <a href='{{auctionUrl}}' class='button'>VIEW DETAILS</a>
+        </div>
+
+        <p>After completing your payment, you'll receive further instructions about shipping and delivery of your item.</p>
+        
+        <p>Congratulations again on your successful bid! We hope you enjoy your new purchase.</p>
+        
+        <p>Best regards,<br />The QuickBidz Team</p>
+      </div>
+      <div class='footer'>
+        <p>If you have any questions, please contact our support team at <a href="mailto:support@quickbidz.com" style="color: #4a47d5; text-decoration: none;">support@quickbidz.com</a></p>
+        <p>This is an automated notification regarding your recent auction activity on QuickBidz.</p>
+        <p>&copy; 2023 QuickBidz. All rights reserved.</p>
+      </div>
+    </div>
+  </body>
+</html>
