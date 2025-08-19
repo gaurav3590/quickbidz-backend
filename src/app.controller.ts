@@ -20,6 +20,16 @@ export class AppController {
     }
   }
 
+  @Get('test')
+  @Public()
+  testEndpoint() {
+    return {
+      message: 'Test endpoint working!',
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV || 'development'
+    };
+  }
+
   @Get('health')
   @Public()
   @ApiOperation({ summary: 'Health check endpoint' })

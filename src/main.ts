@@ -33,17 +33,48 @@ function setupSwagger(app) {
   });
 }
 
+let serverlessHandler: any;
+
 async function bootstrap() {
   const expressApp = express();
   const app = await NestFactory.create<NestExpressApplication>(
     AppModule,
     new ExpressAdapter(expressApp),
   );
+  
   app.useStaticAssets(join(process.cwd(), './src/uploads'));
   setupSwagger(app);
   // CORS is handled by custom middleware in AppModule
-  await app.listen(3005);
-  return configure({ app: expressApp });
+  
+  // Only listen if not in serverless environment
+  if (process.env.NODE_ENV !== 'production' || process.env.VERCEL !== '1') {
+    await app.listen(3005);
+  }
+  
+  // Configure serverless handler
+  serverlessHandler = configure({ app: expressApp });
+  
+  return serverlessHandler;
 }
 
-bootstrap();
+// For Vercel serverless functions
+export default async function handler(req: any, res: any, context: any) {
+  console.log('Vercel handler called with:', { 
+    method: req.method, 
+    url: req.url, 
+    headers: req.headers 
+  });
+  
+  if (!serverlessHandler) {
+    console.log('Initializing serverless handler...');
+    await bootstrap();
+  }
+  
+  console.log('Calling serverless handler...');
+  return serverlessHandler(req, res, context);
+}
+
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+  bootstrap();
+}

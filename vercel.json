@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "buildCommand": "npm run vercel-build",
   "functions": {
     "src/main.ts": {
       "maxDuration": 30
@@ -7,14 +8,68 @@
   },
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "src/main.ts"
+    },
+    {
+      "src": "/auth/(.*)",
+      "dest": "src/main.ts"
+    },
+    {
+      "src": "/user/(.*)",
+      "dest": "src/main.ts"
+    },
+    {
+      "src": "/auctions/(.*)",
+      "dest": "src/main.ts"
+    },
+    {
+      "src": "/bids/(.*)",
+      "dest": "src/main.ts"
+    },
+    {
+      "src": "/comments/(.*)",
+      "dest": "src/main.ts"
+    },
+    {
+      "src": "/notifications/(.*)",
+      "dest": "src/main.ts"
+    },
+    {
+      "src": "/payments/(.*)",
+      "dest": "src/main.ts"
+    },
+    {
+      "src": "/stories/(.*)",
+      "dest": "src/main.ts"
+    },
+    {
+      "src": "/upload/(.*)",
+      "dest": "src/main.ts"
+    },
+    {
+      "src": "/ai/(.*)",
+      "dest": "src/main.ts"
+    },
+    {
+      "src": "/email/(.*)",
+      "dest": "src/main.ts"
+    },
+    {
+      "src": "/test",
+      "dest": "src/main.ts"
+    },
+    {
+      "src": "/health",
+      "dest": "src/main.ts"
+    },
+    {
+      "src": "/",
+      "dest": "src/main.ts"
+    },
+    {
       "src": "/(.*)",
-      "dest": "src/main.ts",
-      "headers": {
-        "Access-Control-Allow-Origin": "https://quickbidz.vercel.app, https://quickbidz.netlify.app",
-        "Access-Control-Allow-Methods": "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization",
-        "Access-Control-Allow-Credentials": "true"
-      }
+      "dest": "src/main.ts"
     }
   ],
   "env": {
