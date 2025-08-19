@@ -4,8 +4,20 @@ import { Request, Response, NextFunction } from 'express';
 @Injectable()
 export class CorsMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
+    const allowedOrigins = [
+      'https://quickbidz.netlify.app',
+      'https://quickbidz.vercel.app',
+      'http://localhost:3000',
+      'http://localhost:3001'
+    ];
+    
+    const origin = req.headers.origin;
+    
     // Set CORS headers
-    res.header('Access-Control-Allow-Origin', 'https://quickbidz.netlify.app');
+    if (origin && allowedOrigins.includes(origin)) {
+      res.header('Access-Control-Allow-Origin', origin);
+    }
+    
     res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     res.header('Access-Control-Allow-Credentials', 'true');

@@ -41,7 +41,7 @@ async function bootstrap() {
   );
   app.useStaticAssets(join(process.cwd(), './src/uploads'));
   setupSwagger(app);
-  app.enableCors();
+  // CORS is handled by custom middleware in AppModule
   await app.listen(3005);
   return configure({ app: expressApp });
 }
