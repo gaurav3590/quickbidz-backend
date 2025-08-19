@@ -20,6 +20,17 @@ export class AppController {
     }
   }
 
+  @Get('api/test')
+  @Public()
+  apiTest() {
+    return {
+      message: 'API is working!',
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV || 'development',
+      status: 'success'
+    };
+  }
+
   @Get('test')
   @Public()
   testEndpoint() {

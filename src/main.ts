@@ -47,7 +47,7 @@ async function bootstrap() {
   // CORS is handled by custom middleware in AppModule
   
   // Only listen if not in serverless environment
-  if (process.env.NODE_ENV !== 'production' || process.env.VERCEL !== '1') {
+  if (process.env.NODE_ENV !== 'production') {
     await app.listen(3005);
   }
   
@@ -59,18 +59,9 @@ async function bootstrap() {
 
 // For Vercel serverless functions
 export default async function handler(req: any, res: any, context: any) {
-  console.log('Vercel handler called with:', { 
-    method: req.method, 
-    url: req.url, 
-    headers: req.headers 
-  });
-  
   if (!serverlessHandler) {
-    console.log('Initializing serverless handler...');
     await bootstrap();
   }
-  
-  console.log('Calling serverless handler...');
   return serverlessHandler(req, res, context);
 }
 
