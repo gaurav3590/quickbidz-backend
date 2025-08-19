@@ -1,8 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { NestExpressApplication } from '@nestjs/platform-express';
+import {
+  ExpressAdapter,
+  NestExpressApplication,
+} from '@nestjs/platform-express';
 import { join } from 'path';
+import configure from '@vendia/serverless-express';
+import * as express from 'express';
 
 function setupSwagger(app) {
   // initiate swagger
@@ -29,11 +34,16 @@ function setupSwagger(app) {
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const expressApp = express();
+  const app = await NestFactory.create<NestExpressApplication>(
+    AppModule,
+    new ExpressAdapter(expressApp),
+  );
   app.useStaticAssets(join(process.cwd(), './src/uploads'));
   setupSwagger(app);
   app.enableCors();
   await app.listen(3005);
+  return configure({ app: expressApp });
 }
 
 bootstrap();
