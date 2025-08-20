@@ -3,12 +3,12 @@
   "functions": {
     "api/index.ts": {
       "maxDuration": 30
+    },
+    "api/test.ts": {
+      "maxDuration": 10
+    },
+    "api/health.ts": {
+      "maxDuration": 10
     }
-  },
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "api/index.ts"
-    }
-  ]
+  }
 }
