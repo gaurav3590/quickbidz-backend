@@ -26,35 +26,6 @@ export class PrismaService
       },
       log: ['error'],
     });
-
-    // For serverless environments - optimize connection pooling
-    if (process.env.NODE_ENV === 'production') {
-      this.$use(async (params, next) => {
-        // Optimize connection for serverless
-        const before = Date.now();
-        
-        try {
-          const result = await next(params);
-          const after = Date.now();
-          
-          // Log slow queries in production (over 1 second)
-          if (after - before > 1000) {
-            this.logger.warn(
-              `Slow query detected: ${params.model}.${params.action} took ${after - before}ms`,
-            );
-          }
-          
-          return result;
-        } catch (error) {
-          // Log database errors
-          this.logger.error(
-            `Error in ${params.model}.${params.action}: ${error.message}`,
-            error.stack,
-          );
-          throw error;
-        }
-      });
-    }
   }
 
   async onModuleInit() {
@@ -70,7 +41,12 @@ export class PrismaService
     try {
       if (!this.isConnected) {
         this.logger.log('Connecting to database...');
-        console.log('Database URL:', this.configService.get<string>('DATABASE_URL')?.replace(/:[^:]*@/, ':****@'));
+        console.log(
+          'Database URL:',
+          this.configService
+            .get<string>('DATABASE_URL')
+            ?.replace(/:[^:]*@/, ':****@'),
+        );
         await this.$connect();
         this.isConnected = true;
         this.logger.log('Successfully connected to database');
@@ -80,7 +56,7 @@ export class PrismaService
       this.logger.error(
         `Failed to connect to database (attempt ${this.retryAttempts}/${this.maxRetries}): ${error.message}`,
       );
-      
+
       console.error('Database connection error details:', {
         code: error.code,
         meta: error.meta,
