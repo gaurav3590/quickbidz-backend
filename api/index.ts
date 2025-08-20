@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { AppModule } from './app.module';
+import { AppModule } from '../src/app.module';
 import {
   ExpressAdapter,
   NestExpressApplication,
@@ -10,7 +10,6 @@ import configure from '@vendia/serverless-express';
 import * as express from 'express';
 
 function setupSwagger(app) {
-  // initiate swagger
   const options = new DocumentBuilder()
     .setTitle('QuickBidz API')
     .setDescription('QuickBidz API')
@@ -37,6 +36,7 @@ let serverlessHandler: any;
 let app: NestExpressApplication;
 
 async function bootstrap() {
+  console.log('Starting bootstrap process...');
   const expressApp = express();
   
   app = await NestFactory.create<NestExpressApplication>(
@@ -55,14 +55,10 @@ async function bootstrap() {
   
   // Set global prefix for API routes
   app.setGlobalPrefix('api', {
-    exclude: ['/', '/health', '/test'],
+    exclude: ['/', '/health', '/test', '/debug'],
   });
   
-  // Only listen if not in serverless environment
-  if (process.env.NODE_ENV !== 'production') {
-    await app.listen(3005);
-    console.log('Application is running on: http://localhost:3005');
-  }
+  console.log('App configured successfully');
   
   // Configure serverless handler
   serverlessHandler = configure({ app: expressApp });
@@ -72,13 +68,16 @@ async function bootstrap() {
 
 // For Vercel serverless functions
 export default async function handler(req: any, res: any, context: any) {
+  console.log('Handler called with:', { 
+    method: req.method, 
+    url: req.url, 
+    path: req.path 
+  });
+  
   if (!serverlessHandler) {
+    console.log('Initializing serverless handler...');
     await bootstrap();
   }
+  
   return serverlessHandler(req, res, context);
-}
-
-// For local development
-if (process.env.NODE_ENV !== 'production') {
-  bootstrap();
 }

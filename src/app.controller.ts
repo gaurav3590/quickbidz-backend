@@ -20,7 +20,7 @@ export class AppController {
     }
   }
 
-  @Get('api/test')
+  @Get('test')
   @Public()
   apiTest() {
     return {
@@ -31,13 +31,16 @@ export class AppController {
     };
   }
 
-  @Get('test')
+  @Get('debug')
   @Public()
-  testEndpoint() {
+  debugInfo() {
     return {
-      message: 'Test endpoint working!',
+      message: 'Debug endpoint working!',
       timestamp: new Date().toISOString(),
-      environment: process.env.NODE_ENV || 'development'
+      environment: process.env.NODE_ENV || 'development',
+      nodeVersion: process.version,
+      platform: process.platform,
+      arch: process.arch
     };
   }
 
