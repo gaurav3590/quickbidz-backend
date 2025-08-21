@@ -26,6 +26,8 @@ import { CommonModule } from './common/common.module';
 import { AuctionEventsModule } from './auction-events/auction-events.module';
 import { UploadModule } from './upload/upload.module';
 import { CorsMiddleware } from './middleware/cors.middleware';
+import { TestController } from './test.controller';
+import { HealthController } from './health.controller';
 // import { FirebaseModule } from './firebase/firebase.module';
 
 @Module({
@@ -59,6 +61,8 @@ import { CorsMiddleware } from './middleware/cors.middleware';
     AuctionsController,
     CommentsController,
     PaymentsController,
+    HealthController,
+    TestController,
   ],
   providers: [
     AppService,
