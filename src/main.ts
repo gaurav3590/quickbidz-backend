@@ -1,12 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import {
-  ExpressAdapter,
-  NestExpressApplication,
-} from '@nestjs/platform-express';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
-import * as express from 'express';
 
 function setupSwagger(app) {
   // initiate swagger
@@ -33,37 +29,11 @@ function setupSwagger(app) {
 }
 
 async function bootstrap() {
-  const expressApp = express();
-  
-  const app = await NestFactory.create<NestExpressApplication>(
-    AppModule,
-    new ExpressAdapter(expressApp),
-  );
-  
-  // Enable CORS
-  app.enableCors({
-    origin: true,
-    credentials: true,
-  });
-  
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useStaticAssets(join(process.cwd(), './src/uploads'));
   setupSwagger(app);
-  
-  // Set global prefix for API routes
-  app.setGlobalPrefix('api', {
-    exclude: ['/', '/health', '/test'],
-  });
-  
-  // Only listen if not in serverless environment
-  if (process.env.NODE_ENV !== 'production') {
-    await app.listen(3005);
-    console.log('Application is running on: http://localhost:3005');
-  }
-  
-  return app;
+  app.enableCors();
+  await app.listen(3005);
 }
 
-// For local development only
-if (process.env.NODE_ENV !== 'production') {
-  bootstrap();
-}
+bootstrap();

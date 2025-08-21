@@ -80,6 +80,6 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(CorsMiddleware)
-      .forRoutes({ path: '*', method: RequestMethod.ALL });
+      .forRoutes('*');
   }
 }
