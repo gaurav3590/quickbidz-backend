@@ -4,8 +4,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   console.log('Test endpoint called:', {
     method: req.method,
     url: req.url,
-    path: req.path,
-    headers: req.headers
+    headers: req.headers,
   });
 
   res.status(200).json({
@@ -14,6 +13,5 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     environment: process.env.NODE_ENV || 'development',
     method: req.method,
     url: req.url,
-    path: req.path
   });
 }
