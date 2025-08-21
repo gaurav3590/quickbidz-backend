@@ -2,12 +2,16 @@ import { Controller, Get, Logger } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Public } from './auth/decorators/public.decorator';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { PrismaService } from './prisma/prisma.service';
 
 @Controller()
 export class AppController {
   private readonly logger = new Logger(AppController.name);
 
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly prismaService: PrismaService,
+  ) {}
 
   @Get()
   @Public()
@@ -42,6 +46,29 @@ export class AppController {
       platform: process.platform,
       arch: process.arch
     };
+  }
+
+  @Get('db-test')
+  @Public()
+  async dbTest() {
+    try {
+      // Test database connection
+      await this.prismaService.$queryRaw`SELECT 1`;
+      return {
+        message: 'Database connection successful!',
+        timestamp: new Date().toISOString(),
+        status: 'connected'
+      };
+    } catch (error) {
+      this.logger.error('Database connection test failed:', error);
+      return {
+        message: 'Database connection failed!',
+        timestamp: new Date().toISOString(),
+        status: 'error',
+        error: error.message,
+        code: error.code
+      };
+    }
   }
 
   @Get('health')
