@@ -3,7 +3,15 @@
   "functions": {
     "api/index.ts": {
       "maxDuration": 30
+    },
+    "api/test.ts": {
+      "maxDuration": 10
     }
   },
-  "rewrites": [{ "source": "/(.*)", "destination": "/api" }]
+  "rewrites": [
+    { "source": "/api/test", "destination": "/api/test" },
+    { "source": "/(.*)", "destination": "/api" }
+  ],
+  "buildCommand": "npm run vercel-build",
+  "outputDirectory": "dist"
 }

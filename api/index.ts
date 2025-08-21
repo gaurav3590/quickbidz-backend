@@ -7,6 +7,7 @@ import {
 } from '@nestjs/platform-express';
 import { join } from 'path';
 import * as express from 'express';
+import configure from '@vendia/serverless-express';
 
 function setupSwagger(app) {
   const options = new DocumentBuilder()
@@ -31,6 +32,7 @@ function setupSwagger(app) {
   });
 }
 
+let serverlessHandler: any;
 let app: NestExpressApplication;
 
 async function bootstrap() {
@@ -58,24 +60,24 @@ async function bootstrap() {
   
   console.log('App configured successfully');
   
-  return expressApp;
+  // Configure serverless handler
+  serverlessHandler = configure({ app: expressApp });
+  
+  return serverlessHandler;
 }
 
 // For Vercel serverless functions
-export default async function handler(req: any, res: any) {
+export default async function handler(req: any, res: any, context: any) {
   console.log('Handler called with:', { 
     method: req.method, 
     url: req.url, 
     path: req.path 
   });
   
-  if (!app) {
+  if (!serverlessHandler) {
     console.log('Initializing app...');
-    const expressApp = await bootstrap();
-    return expressApp(req, res);
+    await bootstrap();
   }
   
-  // Get the underlying Express app
-  const expressApp = app.getHttpAdapter().getInstance();
-  return expressApp(req, res);
+  return serverlessHandler(req, res, context);
 }
