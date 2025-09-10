@@ -20,7 +20,6 @@ import { PaymentsModule } from './payments/payments.module';
 import { StoriesModule } from './stories/stories.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
-import { AiModule } from './ai/ai.module';
 import { EmailModule } from './email/email.module';
 import { CommonModule } from './common/common.module';
 import { AuctionEventsModule } from './auction-events/auction-events.module';
@@ -49,7 +48,6 @@ import { HealthController } from './health.controller';
     NotificationsModule,
     PaymentsModule,
     StoriesModule,
-    AiModule,
     EmailModule,
     CommonModule,
     AuctionEventsModule,
@@ -78,8 +76,6 @@ import { HealthController } from './health.controller';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(CorsMiddleware)
-      .forRoutes('*');
+    consumer.apply(CorsMiddleware).forRoutes('*');
   }
 }
